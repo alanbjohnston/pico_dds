@@ -17,6 +17,11 @@ int dds_pin_slice;
 pwm_config dds_pwm_config;
 byte sin_table[201];
 
+int clock = 50E3
+float multiplier;
+int wrap;
+int isr_period;
+
 RPI_PICO_Timer dds_ITimer2(2);
 
 bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
@@ -39,6 +44,13 @@ bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
 
 void dds_begin() {
   if (!dds_timer_started) { 
+   
+    wrap = 10;
+    multiplier = 133E6 / (clock * wrap);
+    isr_period = (int) ( 1E6 / clock + 0.5);
+    
+    Serial.printf("DDS begin\nClock: %d Wrap: %d Multiplier: %4.1f Period in us: %d\n", clock, wrap, multiplier, isr_period);
+    
 #ifdef DDS_ALT    
     if (dds_ITimer2.attachInterruptInterval(20, dds_TimerHandler0))	{   // was 10
       Serial.print(F("Starting dds_ITimer2 OK, micros() = ")); Serial.println(micros());
