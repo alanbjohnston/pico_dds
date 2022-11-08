@@ -21,7 +21,7 @@ int clock = 50E3;
 float multiplier;
 int wrap = 10;
 int isr_period;
-byte samples = 100;  // was 200
+byte samples = 50;  // was 200
 
 RPI_PICO_Timer dds_ITimer2(2);
 
