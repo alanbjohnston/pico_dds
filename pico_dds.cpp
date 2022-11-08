@@ -7,6 +7,8 @@
 #define DDS_ALT
 
 volatile int dds_duration_us = 1000;
+volatile int dds_index = 0;
+volatile int dds_index_offset = 0;
 int dds_duration_previous_us = 1000;
 bool dds_timer_started = false;
 long time_stamp = 0;
@@ -27,7 +29,7 @@ RPI_PICO_Timer dds_ITimer2(2);
 
 bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
   if (dds_enable) {
-     int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)dds_sin_samples )) % dds_sin_samples;
+     dds_index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)dds_sin_samples )) % dds_sin_samples + dds_index_offset;
 
 //      Serial.print(index);
 //      Serial.print(" + ");
@@ -177,6 +179,7 @@ void dds_setfreq(int freq) {
 //    Serial.print("Period: ");
 //    Serial.println(dds_duration_us);
         dds_duration_previous_us = dds_duration_us;
+        dds_index_offset = dds_index;
         time_stamp = time_us_32();
       }  
    }
