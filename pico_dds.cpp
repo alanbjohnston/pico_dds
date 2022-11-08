@@ -102,7 +102,7 @@ void dds_begin() {
  time_stamp = time_us_32();
 
     for (int i = 0; i < 200; i++)  {
-      sin_table[i] = 0.5 * (9 + 1) * sin((2 * 3.14 * i)/200.0) + 0.5 * (9 + 1); //  + 0.5; 
+      sin_table[i] = 0.5 * (wrap + 1) * sin((2 * 3.14 * i)/200.0) + 0.5 * (wrap); //  + 0.5; 
       Serial.print(sin_table[i]);
       Serial.print(" ");
 //      pwm_set_gpio_level(DDS_PWM_PIN, i);
