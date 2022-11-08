@@ -19,14 +19,15 @@ byte sin_table[201];
 
 int clock = 50E3;
 float multiplier;
-int wrap = 9;
+int wrap = 10;
 int isr_period;
+byte samples = 200;
 
 RPI_PICO_Timer dds_ITimer2(2);
 
 bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
   if (dds_enable) {
-     int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * 200.0 )) % 200;
+     int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)samples )) % samples;
 
 //      Serial.print(index);
 //      Serial.print(" + ");
@@ -100,8 +101,8 @@ void dds_begin() {
   dds_enable = true;
  time_stamp = time_us_32();
 
-    for (int i = 0; i < 200; i++)  {
-      sin_table[i] = 0.5 * (wrap + 2) * sin((2 * 3.14 * i)/200.0) + 0.5 * (wrap + 1); //  + 0.5; 
+    for (int i = 0; i < samples; i++)  {
+      sin_table[i] = 0.5 * (wrap + 2) * sin((2 * 3.14 * i)/(float)(samples)) + 0.5 * (wrap + 1); //  + 0.5; 
       Serial.print(sin_table[i]);
       Serial.print(" ");
 //      pwm_set_gpio_level(DDS_PWM_PIN, i);
