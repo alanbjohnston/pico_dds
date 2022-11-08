@@ -1,5 +1,5 @@
 #include "hardware/pwm.h"  // pwm 
-#include pico_dds.h
+#include "pico_dds.h"
 
 #define DDS_PWM_PIN 26
 
