@@ -99,14 +99,15 @@ void dds_pwm_interrupt_handler() {
       //      Serial.print(i);
 //      Serial.print(" ");
       pwm_set_gpio_level(DDS_PWM_PIN, 9);
+      int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * 200.0 )) % 200;
       pwm_set_gpio_level(DDS_PWM_PIN, 0);    
 //    Serial.print(time_us_32());
 //    Serial.print(" ");
 //    time_stamp = time_us_32();
- 
+  }
+    
   } else
      pwm_set_gpio_level(DDS_PWM_PIN,0);
-  } 
 
     pwm_clear_irq(pwm_gpio_to_slice_num(DDS_PWM_PIN)); 
 }
