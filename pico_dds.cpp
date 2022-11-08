@@ -29,7 +29,7 @@ RPI_PICO_Timer dds_ITimer2(2);
 
 bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
   if (dds_enable) {
-     dds_index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)dds_sin_samples )) % dds_sin_samples + dds_index_offset;
+     dds_index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)dds_sin_samples ) + dds_index_offset) % dds_sin_samples;
 
 //      Serial.print(index);
 //      Serial.print(" + ");
@@ -140,7 +140,7 @@ void dds_pwm_interrupt_handler() {
 //    time_stamp = time_us_32();
 //    uint16_t  i = 0.5 * (dds_pwm_config.top) * sin((3.14 * time_us_32())/dds_duration_us) + 0.5 * (dds_pwm_config.top + 1);  // was 2 *
 
-      dds_index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)(dds_sin_samples) )) % dds_sin_samples + dds_index_offset;
+      dds_index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)(dds_sin_samples) ) + dds_index_offset) % dds_sin_samples;
 
 //      Serial.print(index);
 //      Serial.print(" + ");
