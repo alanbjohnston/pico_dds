@@ -4,14 +4,12 @@
 #define DDS_PWM_PIN 26
 
 bool debug_pwm = false;
-
 volatile int dds_duration_us = 500;
 bool dds_timer_started = false;
-
+long time_stamp = 0;
+int dds_count = 0;
 volatile bool dds_enable = false;
 volatile long dds_counter = 0;
-
-
 int dds_pin_slice;
 pwm_config dds_pwm_config;
 byte sin_table[201];
