@@ -1,5 +1,6 @@
 #include "hardware/pwm.h"  // pwm 
 #include "pico_dds.h"
+#include "RPi_Pico_TimerInterrupt.h"
 
 #define DDS_PWM_PIN 26
 
@@ -14,9 +15,38 @@ int dds_pin_slice;
 pwm_config dds_pwm_config;
 byte sin_table[201];
 
+RPI_PICO_Timer dds_ITimer2(2);
+
+bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
+  if (dds_enable) {
+      int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * 200.0 )) % 200;
+
+//      Serial.print(index);
+//      Serial.print(" + ");
+
+     uint16_t  i = sin_table[index];
+
+      //      Serial.print(i);
+//      Serial.print(" ");
+    
+      pwm_set_gpio_level(DDS_PWM_PIN, i);
+
+  }
+  return(true);
+}
+
 
 void dds_begin() {
-  if (!dds_timer_started) {  
+  if (!dds_timer_started) { 
+    
+    if (dds_ITimer2.attachInterruptInterval(10, dds_TimerHandler0))	{ 
+      Serial.print(F("Starting dds_ITimer2 OK, micros() = ")); Serial.println(micros());
+      dds_timer_started = true;
+    }
+    else
+      Serial.println(F("Can't set dds_ITimer2. Select another Timer, freq. or timer"));
+    
+    
   dds_counter = 0;  
     Serial.println("Starting pwm f= MHz!");
   
@@ -25,11 +55,13 @@ void dds_begin() {
     gpio_set_function(DDS_PWM_PIN, GPIO_FUNC_PWM);
     dds_pin_slice = pwm_gpio_to_slice_num(DDS_PWM_PIN);
       // Setup PWM interrupt to fire when PWM cycle is complete
+/*    
     pwm_clear_irq(dds_pin_slice);
     pwm_set_irq_enabled(dds_pin_slice, true);
     // set the handle function above
     irq_set_exclusive_handler(PWM_IRQ_WRAP, dds_pwm_interrupt_handler); 
     irq_set_enabled(PWM_IRQ_WRAP, true);	  
+*/    
   
     dds_pwm_config = pwm_get_default_config();
     pwm_config_set_clkdiv(&dds_pwm_config, 100.0); // was 50 75 25.0); // 33.333);  // 1.0f
