@@ -4,7 +4,7 @@
 
 #define DDS_PWM_PIN 26
 
-#define DDS_ALT
+//#define DDS_ALT
 
 bool debug_pwm = false;
 volatile int dds_duration_us = 500;
