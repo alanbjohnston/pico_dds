@@ -52,7 +52,7 @@ void dds_begin() {
     Serial.printf("DDS begin\nClock: %d Wrap: %d Multiplier: %4.1f Period in us: %d\n", clock, wrap, multiplier, isr_period);
     
 #ifdef DDS_ALT    
-    if (dds_ITimer2.attachInterruptInterval(20, dds_TimerHandler0))	{   // was 10
+    if (dds_ITimer2.attachInterruptInterval(isr_period, dds_TimerHandler0))	{   // was 10
       Serial.print(F("Starting dds_ITimer2 OK, micros() = ")); Serial.println(micros());
       dds_timer_started = true;
     }
@@ -77,11 +77,13 @@ void dds_begin() {
 #endif  
   
     dds_pwm_config = pwm_get_default_config();
-    pwm_config_set_clkdiv(&dds_pwm_config, 100.0); // was 50 75 25.0); // 33.333);  // 1.0f
-    pwm_config_set_wrap(&dds_pwm_config, 10); // 3 
+    pwm_config_set_clkdiv(&dds_pwm_config, multiplier); // was 100.0 50 75 25.0); // 33.333);  // 1.0f
+    pwm_config_set_wrap(&dds_pwm_config, wrap); // 3 
     pwm_init(dds_pin_slice, &dds_pwm_config, true);
     pwm_set_gpio_level(DDS_PWM_PIN, (dds_pwm_config.top + 1) * 0.5);
   
+    Serial.printf("PWM config.top: %d\n", dds_pwm_config.top);
+    
 //  if (debug_pwm) 
   {	
     Serial.print(pwm_gpio_to_slice_num(DDS_PWM_PIN));
@@ -100,7 +102,7 @@ void dds_begin() {
  time_stamp = time_us_32();
 
     for (int i = 0; i < 200; i++)  {
-      sin_table[i] = 0.5 * (9) * sin((2 * 3.14 * i)/200.0) + 0.5 * (9 + 1) + 0.5; 
+      sin_table[i] = 0.5 * (9 + 1) * sin((2 * 3.14 * i)/200.0) + 0.5 * (9 + 1); //  + 0.5; 
       Serial.print(sin_table[i]);
       Serial.print(" ");
 //      pwm_set_gpio_level(DDS_PWM_PIN, i);
