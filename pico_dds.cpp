@@ -4,7 +4,7 @@
 
 #define DDS_PWM_PIN 26
 
-//#define ALT
+#define DDS_ALT
 
 bool debug_pwm = false;
 volatile int dds_duration_us = 500;
@@ -21,10 +21,7 @@ RPI_PICO_Timer dds_ITimer2(2);
 
 bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
   if (dds_enable) {
-#ifdef ALT
-    
-#else
-      int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * 200.0 )) % 200;
+     int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * 200.0 )) % 200;
 
 //      Serial.print(index);
 //      Serial.print(" + ");
@@ -35,7 +32,6 @@ bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
 //      Serial.print(" ");
     
       pwm_set_gpio_level(DDS_PWM_PIN, i);
-#endif
   }
   return(true);
 }
@@ -43,14 +39,14 @@ bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
 
 void dds_begin() {
   if (!dds_timer_started) { 
-    
+#ifdef DDS_ALT    
     if (dds_ITimer2.attachInterruptInterval(20, dds_TimerHandler0))	{   // was 10
       Serial.print(F("Starting dds_ITimer2 OK, micros() = ")); Serial.println(micros());
       dds_timer_started = true;
     }
     else
       Serial.println(F("Can't set dds_ITimer2. Select another Timer, freq. or timer"));
-    
+#endif    
     
   dds_counter = 0;  
     Serial.println("Starting pwm f= MHz!");
@@ -60,13 +56,13 @@ void dds_begin() {
     gpio_set_function(DDS_PWM_PIN, GPIO_FUNC_PWM);
     dds_pin_slice = pwm_gpio_to_slice_num(DDS_PWM_PIN);
       // Setup PWM interrupt to fire when PWM cycle is complete
-/*    
+#ifndef DDS_ALT    
     pwm_clear_irq(dds_pin_slice);
     pwm_set_irq_enabled(dds_pin_slice, true);
     // set the handle function above
     irq_set_exclusive_handler(PWM_IRQ_WRAP, dds_pwm_interrupt_handler); 
     irq_set_enabled(PWM_IRQ_WRAP, true);	  
-*/    
+#endif  
   
     dds_pwm_config = pwm_get_default_config();
     pwm_config_set_clkdiv(&dds_pwm_config, 100.0); // was 50 75 25.0); // 33.333);  // 1.0f
