@@ -34,7 +34,7 @@ bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
 //      Serial.print(index);
 //      Serial.print(" + ");
 
-     uint16_t  i = sin_table[index];
+     uint16_t  i = sin_table[dds_index];
 
       //      Serial.print(i);
 //      Serial.print(" ");
@@ -140,12 +140,12 @@ void dds_pwm_interrupt_handler() {
 //    time_stamp = time_us_32();
 //    uint16_t  i = 0.5 * (dds_pwm_config.top) * sin((3.14 * time_us_32())/dds_duration_us) + 0.5 * (dds_pwm_config.top + 1);  // was 2 *
 
-      int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)(dds_sin_samples) )) % dds_sin_samples;
+      dds_index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * (float)(dds_sin_samples) )) % dds_sin_samples + dds_index_offset;
 
 //      Serial.print(index);
 //      Serial.print(" + ");
 
-     uint16_t  i = sin_table[index];
+     uint16_t  i = sin_table[dds_index];
 
       //      Serial.print(i);
 //      Serial.print(" ");
