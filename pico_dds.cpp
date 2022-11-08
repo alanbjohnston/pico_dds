@@ -4,6 +4,8 @@
 
 #define DDS_PWM_PIN 26
 
+//#define ALT
+
 bool debug_pwm = false;
 volatile int dds_duration_us = 500;
 bool dds_timer_started = false;
@@ -19,6 +21,9 @@ RPI_PICO_Timer dds_ITimer2(2);
 
 bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
   if (dds_enable) {
+#ifdef ALT
+    
+#else
       int index = ((int)(((float)(time_us_32() - time_stamp) / (float) dds_duration_us) * 200.0 )) % 200;
 
 //      Serial.print(index);
@@ -30,7 +35,7 @@ bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
 //      Serial.print(" ");
     
       pwm_set_gpio_level(DDS_PWM_PIN, i);
-
+#endif
   }
   return(true);
 }
@@ -39,7 +44,7 @@ bool dds_TimerHandler0(struct repeating_timer *t) {  // DDS timer for waveform
 void dds_begin() {
   if (!dds_timer_started) { 
     
-    if (dds_ITimer2.attachInterruptInterval(10, dds_TimerHandler0))	{ 
+    if (dds_ITimer2.attachInterruptInterval(20, dds_TimerHandler0))	{   // was 10
       Serial.print(F("Starting dds_ITimer2 OK, micros() = ")); Serial.println(micros());
       dds_timer_started = true;
     }
