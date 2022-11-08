@@ -6,7 +6,7 @@
 bool debug_pwm = false;
 
 volatile int dds_duration_us = 500;
-
+bool dds_timer_started = false;
 
 volatile bool dds_enable = false;
 volatile long dds_counter = 0;
@@ -122,8 +122,8 @@ void dds_setfreq(int freq) {
 //    Serial.print("Period: ");
 //    Serial.println(dds_duration_us);
 
-  if (dds_duration_us != dds_duration_previous_us) {   // only change if frequency is different
-    dds_duration_previous_us = dds_duration_us;
+//  if (dds_duration_us != dds_duration_previous_us) {   // only change if frequency is different
+//    dds_duration_previous_us = dds_duration_us;
     
 //    time_stamp = time_us_32();
   }   
