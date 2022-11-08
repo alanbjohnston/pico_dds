@@ -124,5 +124,5 @@ void dds_setfreq(int freq) {
 //    dds_duration_previous_us = dds_duration_us;
     
 //    time_stamp = time_us_32();
-  }   
+//  }   
 }
