@@ -17,7 +17,7 @@ int dds_pin_slice;
 pwm_config dds_pwm_config;
 byte sin_table[201];
 
-int clock = 50E3;
+int clock = 22E3; // 50E3;
 float multiplier;
 int wrap = 5; // 10;
 int isr_period;
