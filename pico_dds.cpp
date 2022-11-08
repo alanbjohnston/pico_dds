@@ -19,7 +19,7 @@ byte sin_table[201];
 
 int clock = 50E3;
 float multiplier;
-int wrap = 10;
+int wrap = 5; // 10;
 int isr_period;
 byte dds_sin_samples = 50;  // was 200
 
