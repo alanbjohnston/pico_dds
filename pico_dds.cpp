@@ -6,7 +6,8 @@
 
 #define DDS_ALT
 
-volatile int dds_duration_us = 500;
+volatile int dds_duration_us = 1000;
+int dds_duration_previous_us = 1000;
 bool dds_timer_started = false;
 long time_stamp = 0;
 int dds_count = 0;
@@ -166,14 +167,17 @@ void dds_down() {
 }
 
 void dds_setfreq(int freq) {
+
   if (freq == 0)
     dds_enable = false;
   else  {
-    dds_duration_us = 1E6 / (float)freq; // - 10;  // subtract 3 us of processing delay
-    dds_enable = true;
+      dds_duration_us = 1E6 / (float)freq; // - 10;  // subtract 3 us of processing delay
+      if (dds_duration_previous_us != dds_duration_us) {
+        dds_enable = true;
 //    Serial.print("Period: ");
 //    Serial.println(dds_duration_us);
-    
-    time_stamp = time_us_32();
-  }   
+        dds_duration_previous_us = dds_duration_us;
+        time_stamp = time_us_32();
+      }  
+   }
 }
