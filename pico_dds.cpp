@@ -4,7 +4,7 @@
 
 #define DDS_PWM_PIN 26
 
-//#define DDS_ALT
+#define DDS_ALT
 
 volatile int dds_duration_us = 500;
 bool dds_timer_started = false;
