@@ -59,13 +59,13 @@ void dds_begin() {
       Serial.print(sin_table[i]);
       Serial.print(" ");
       pwm_set_gpio_level(DDS_PWM_PIN, i);
-//      delay(1);
+      delay(100);
     }
    Serial.println("10x");
     for (int j = 0; j < 10; j++) {
     for (int i = 0; i < 200; i++)  {
       pwm_set_gpio_level(DDS_PWM_PIN, sin_table[i]);
-      delay(1);
+      delay(10);
     }
     }
   Serial.println("Sweep");
