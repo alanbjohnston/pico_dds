@@ -49,7 +49,7 @@ void dds_begin() {
     multiplier = 133E6 / (clock * wrap);
     isr_period = (int) ( 1E6 / clock + 0.5);
     
-    Serial.printf("DDS begin\nClock: %d Wrap: %d Multiplier: %4.1f Period in us: %d\n", clock, wrap, multiplier, isr_period);
+    Serial.printf("DDS begin\nClock: %d Wrap: %d Multiplier: %4.1f Period in us: %d Sin samples: %d\n", clock, wrap, multiplier, isr_period, samples);
     
 #ifdef DDS_ALT    
     if (dds_ITimer2.attachInterruptInterval(isr_period, dds_TimerHandler0))	{   // was 10
@@ -102,7 +102,7 @@ void dds_begin() {
  time_stamp = time_us_32();
 
     for (int i = 0; i < samples; i++)  {
-      sin_table[i] = 0.5 * (wrap + 2) * sin((2 * 3.14 * i)/(float)(samples)) + 0.5 * (wrap + 1); //  + 0.5; 
+      sin_table[i] = 0.5 * (wrap + 2) * sin((2 * 3.14 * i)/(float)(samples)) + 0.5 * (wrap + 1) + 0.5; 
       Serial.print(sin_table[i]);
       Serial.print(" ");
 //      pwm_set_gpio_level(DDS_PWM_PIN, i);
