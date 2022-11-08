@@ -6,7 +6,6 @@
 
 //#define DDS_ALT
 
-bool debug_pwm = false;
 volatile int dds_duration_us = 500;
 bool dds_timer_started = false;
 long time_stamp = 0;
