@@ -174,6 +174,6 @@ void dds_setfreq(int freq) {
 //    Serial.print("Period: ");
 //    Serial.println(dds_duration_us);
     
-//    time_stamp = time_us_32();
+    time_stamp = time_us_32();
   }   
 }
