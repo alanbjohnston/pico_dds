@@ -51,7 +51,7 @@ void dds_begin() {
     multiplier = 133E6 / (clock * wrap);
     isr_period = (int) ( 1E6 / clock + 0.5);
     
-    Serial.printf("DDS begin\nClock: %d Wrap: %d Multiplier: %4.1f Period in us: %d Sin samples: %d\n", clock, wrap, multiplier, isr_period, dds_sin_samples);
+    Serial.printf("Pico DDS v0.1 begin\nClock: %d Wrap: %d Multiplier: %4.1f Period in us: %d Sin samples: %d\n", clock, wrap, multiplier, isr_period, dds_sin_samples);
     
 #ifdef DDS_ALT    
     if (dds_ITimer2.attachInterruptInterval(isr_period, dds_TimerHandler0))	{   // was 10
