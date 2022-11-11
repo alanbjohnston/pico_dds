@@ -21,9 +21,9 @@ byte sin_table[201];
 
 int clock = 22E3; // 50E3;
 float multiplier;
-int wrap = 5; // 10;
+int wrap = 10; // 5;
 int isr_period;
-byte dds_sin_samples = 50;  // was 200
+byte dds_sin_samples = 100;  // was 50 200
 
 RPI_PICO_Timer dds_ITimer2(2);
 
