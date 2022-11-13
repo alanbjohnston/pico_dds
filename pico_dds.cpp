@@ -5,6 +5,7 @@
 //#define DDS_PWM_PIN 26
 
 #define DDS_ALT
+//#define DDS_DEBUG
 
 volatile int dds_duration_us = 1000;
 volatile int dds_index = 0;
@@ -123,6 +124,7 @@ void dds_begin(int pin) {
     }
     }
  */   
+/*  
   Serial.println("\nSweep");
   for (int k = 100; k < 1500; k+=100) {
     dds_setfreq(k);
@@ -130,6 +132,7 @@ void dds_begin(int pin) {
     Serial.println(k);
   }
   Serial.println("End");
+*/  
 
 }
 
