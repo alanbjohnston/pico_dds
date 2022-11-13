@@ -22,9 +22,9 @@ byte dds_pwpin;
 
 int clock = 22E3; // 50E3;
 float multiplier;
-int wrap = 5; // 10;
+int wrap = 10; // 5;
 int isr_period;
-byte dds_sin_samples = 50;  // was 200
+byte dds_sin_samples = 100;  // was 50 200
 
 RPI_PICO_Timer dds_ITimer2(2);
 
@@ -174,9 +174,10 @@ void dds_down() {
 
 void dds_setfreq(int freq) {
 
-  if (freq == 0)
+  if (freq == 0)  {
     dds_enable = false;
-  else  {
+    dds_duration_previous_us = 0;
+  }  else  {
       dds_duration_us = 1E6 / (float)freq; // - 10;  // subtract 3 us of processing delay
       if (dds_duration_previous_us != dds_duration_us) {
         dds_enable = true;
