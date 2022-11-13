@@ -19,7 +19,7 @@ volatile long dds_counter = 0;
 int dds_pin_slice;
 pwm_config dds_pwm_config;
 byte sin_table[201];
-byte dds_pwpin;
+byte dds_pwm_pin;
 
 int clock = 22E3; // 50E3;
 float multiplier;
