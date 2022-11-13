@@ -170,9 +170,10 @@ void dds_down() {
 
 void dds_setfreq(int freq) {
 
-  if (freq == 0)
+  if (freq == 0)  {
     dds_enable = false;
-  else  {
+    dds_duration_previous_us = 0;
+  }  else  {
       dds_duration_us = 1E6 / (float)freq; // - 10;  // subtract 3 us of processing delay
       if (dds_duration_previous_us != dds_duration_us) {
         dds_enable = true;
